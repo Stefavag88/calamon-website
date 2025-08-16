@@ -1,0 +1,67 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type ApartmentEntry = CollectionEntry<"apartment">;
+
+const { slug } = Astro.params;
+
+// Fetch and find entry
+const apartments = await getCollection("apartment", (a: ApartmentEntry) => a.data.published !== false);
+const entry = apartments.find((a: ApartmentEntry) => a.slug === slug);
+if (!entry) throw new Error(`Apartment not found: ${slug}`);
+
+const { data, body } = entry;
+
+// ✅ make gallery a typed array so .map() is happy
+const gallery: string[] = data.gallery ?? [];
+
+// SEO props for Layout
+const title = data.seo?.title ?? data.title;
+const description = data.seo?.description ?? data.description;
+// ✅ if you removed slug from frontmatter, use entry.slug (not data.slug)
+const canonical = data.seo?.canonical ?? `https://www.calamon.com/apartments/${entry.slug}`;
+
+// JSON-LD
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Apartment",
+  name: data.title,
+  description: data.description,
+  image: data.heroImage ? `https://www.calamon.com${data.heroImage}` : undefined,
+  amenityFeature: (data.amenities || []).map((a: string) => ({
+    "@type": "LocationFeatureSpecification",
+    name: a,
+    value: true
+  })),
+  url: `https://www.calamon.com/apartments/${entry.slug}`
+};
+---
+
+<Layout {title} {description} {canonical} jsonLd={jsonLd}>
+  <article class="max-w-3xl mx-auto p-6">
+    <h1 class="text-3xl font-semibold mb-4">{data.title}</h1>
+
+    {data.heroImage && (
+      <img
+        src={data.heroImage}
+        alt={data.title}
+        class="mb-4 rounded-lg shadow"
+        width="1200"
+        height="675"
+      />
+    )}
+
+    <div class="prose">
+      {body}
+    </div>
+
+    {gallery.length > 0 && (
+      <section class="mt-6 grid gap-4 md:grid-cols-2">
+        {gallery.map((img: string) => (
+          <img src={img} alt={`${data.title} photo`} class="rounded-md shadow" loading="lazy" />
+        ))}
+      </section>
+    )}
+  </article>
+</Layout>

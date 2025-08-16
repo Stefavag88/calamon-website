@@ -1,0 +1,14 @@
+---
+const { title, description, canonical, jsonLd } = Astro.props;
+---
+<head>
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {canonical && <link rel="canonical" href={canonical} />}
+  {jsonLd && (
+    <script type="application/ld+json">
+      {JSON.stringify(jsonLd)}
+    </script>
+  )}
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>

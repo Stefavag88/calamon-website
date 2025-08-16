@@ -1,0 +1,62 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type ApartmentEntry = CollectionEntry<"apartment">;
+
+const apartments: ApartmentEntry[] = (await getCollection(
+  "apartment",
+  (a: ApartmentEntry) => a.data.published !== false
+)).sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+const title = "Apartments | Calamon";
+const description =
+  "Apartments in Kalamaki, Crete. Seaside stays with terrace views and easy beach access.";
+const canonical = "https://www.calamon.com/apartments";
+---
+
+<Layout {title} {description} {canonical}>
+  <header class="mb-8 max-w-6xl mx-auto px-6">
+    <h1 class="text-3xl font-bold">Apartments</h1>
+    <p class="mt-2 opacity-80">Choose from our available apartments in Kalamaki, Crete.</p>
+  </header>
+
+  <section class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto px-6 pb-10">
+    {apartments.map((entry: ApartmentEntry) => {
+      const { data } = entry;
+      const amenities: string[] = data.amenities ?? [];
+      return (
+        <a
+          href={`/apartments/${entry.slug}`}
+          class="block rounded-2xl border shadow-sm hover:shadow-md transition p-3 focus:outline-none focus:ring"
+        >
+          {data.heroImage && (
+            <img
+              src={data.heroImage}
+              alt={data.title}
+              width="800"
+              height="450"
+              class="w-full aspect-video object-cover rounded-xl mb-3"
+              loading="lazy"
+            />
+          )}
+          <h2 class="text-lg font-semibold">{data.title}</h2>
+          <p class="text-sm opacity-80 line-clamp-2">{data.description}</p>
+
+          {amenities.length > 0 && (
+            <ul class="mt-2 flex flex-wrap gap-2 text-xs opacity-80">
+              {amenities.slice(0, 4).map((a: string) => (
+                <li class="rounded-full border px-2 py-0.5">{a}</li>
+              ))}
+              {amenities.length > 4 && (
+                <li class="rounded-full border px-2 py-0.5">
+                  +{amenities.length - 4} more
+                </li>
+              )}
+            </ul>
+          )}
+        </a>
+      );
+    })}
+  </section>
+</Layout>
