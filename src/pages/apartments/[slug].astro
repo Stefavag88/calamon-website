@@ -4,33 +4,25 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 type ApartmentEntry = CollectionEntry<"apartment">;
 
-// 1) Tell Astro which slugs to build
 export async function getStaticPaths() {
   const apartments = await getCollection("apartment", ({ data }) => data.published !== false);
   return apartments.map((entry) => ({
-    params: { slug: entry.slug },   // filename-based slug
-    props: { entry },               // pass the entry down
+    params: { slug: entry.slug },
+    props: { entry },
   }));
 }
 
-// 2) Receive the entry from props
 const { entry } = Astro.props as { entry: ApartmentEntry };
-
-// If you want Markdown content, render it:
 const rendered = await entry.render();
 const { Content } = rendered;
 
 const { data } = entry;
 
-// SEO
 const title = data.seo?.title ?? data.title;
 const description = data.seo?.description ?? data.description;
 const canonical = data.seo?.canonical ?? `https://www.calamon.com/apartments/${entry.slug}`;
-
-// Gallery typed
 const gallery: string[] = data.gallery ?? [];
 
-// JSON-LD
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Apartment",
@@ -45,6 +37,7 @@ const jsonLd = {
   url: `https://www.calamon.com/apartments/${entry.slug}`
 };
 ---
+
 <Layout {title} {description} {canonical} jsonLd={jsonLd}>
   <article class="max-w-3xl mx-auto p-6">
     <h1 class="text-3xl font-semibold mb-4">{data.title}</h1>
@@ -57,18 +50,26 @@ const jsonLd = {
         width="1200"
         height="675"
         loading="lazy"
+        decoding="async"
+        sizes="(min-width: 1024px) 960px, (min-width: 640px) 80vw, 100vw"
       />
     )}
 
-    <!-- Render the Markdown body -->
-    <div class="prose">
+    <div class="prose prose-invert max-w-none">
       <Content />
     </div>
 
     {gallery.length > 0 && (
       <section class="mt-6 grid gap-4 md:grid-cols-2">
-        {gallery.map((img) => (
-          <img src={img} alt={`${data.title} photo`} class="rounded-md shadow" loading="lazy" />
+        {gallery.map((img: string) => (
+          <img
+            src={img}
+            alt={`${data.title} photo`}
+            class="rounded-md shadow"
+            loading="lazy"
+            decoding="async"
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
         ))}
       </section>
     )}

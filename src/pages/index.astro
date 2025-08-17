@@ -1,31 +1,71 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Carousel from "../components/Carousel.astro";
----
-<Layout title="Welcome to Calamon" description="Apartments in Episkopi, Crete">
-  <section class="p-6">
-    <h1 class="text-3xl font-bold">Welcome to Calamon Apartments</h1>
-    <p class="mt-2">Stay by the sea, enjoy Crete.</p>
 
-    <Carousel slides={[
-      {
-        src: "/images/home/hero1.jpg",
-        alt: "Calamon Apartments",
-        title: "Calamon Apartments",
-        text: "Your home away from home in Crete."
-      },
-      {
-        src: "/images/home/hero2.jpg",
-        alt: "Beachfront Views",
-        title: "Beachfront Views",
-        text: "Enjoy stunning views of the Mediterranean."
-      },
-      {
-        src: "/images/home/hero3.jpg",
-        alt: "Luxurious Interiors",
-        title: "Luxurious Interiors",
-        text: "Experience luxury and comfort in every room."
-      }
-    ]} />
-  </section>
+const slides = [
+  {
+    src: "/images/home/hero1.jpg",
+    alt: "Sea view from Calamon terrace at sunset",
+    title: "Calamon Apartments",
+    text: "Your home away from home in Crete."
+  },
+  {
+    src: "/images/home/hero2.jpg",
+    alt: "Wide sandy beach near Episkopi",
+    title: "Beachfront Views",
+    text: "Enjoy stunning views of the Mediterranean."
+  },
+  {
+    src: "/images/home/hero3.jpg",
+    alt: "Modern living room interior",
+    title: "Luxurious Interiors",
+    text: "Experience luxury and comfort in every room."
+  }
+];
+---
+
+<Layout title="Welcome to Calamon" description="Apartments in Episkopi, Crete">
+  <main>
+    <!-- Hero / Carousel -->
+    <section class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <h1 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-tight">
+        Welcome to Calamon Apartments
+      </h1>
+      <p class="mt-2 text-[var(--color-muted)]">
+        Stay by the sea, enjoy Crete.
+      </p>
+
+      <div class="mt-6">
+        <Carousel slides={slides} ariaLabel="Calamon highlights" />
+      </div>
+
+      <!-- Quick actions -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/apartments" class="inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium bg-[var(--color-brand)] text-black hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)] transition">
+          View Apartments
+        </a>
+        <a href="/contact" class="inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium bg-white/5 border border-white/10 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 transition">
+          Contact Us
+        </a>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="container mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <article class="rounded-[var(--radius)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-soft)] hover:-translate-y-0.5 transition">
+          <h3 class="text-lg font-semibold">Prime Location</h3>
+          <p class="mt-1 text-[var(--color-muted)]">Episkopi beach, Sfakia, and southern Crete highlights within easy reach.</p>
+        </article>
+        <article class="rounded-[var(--radius)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-soft)] hover:-translate-y-0.5 transition">
+          <h3 class="text-lg font-semibold">Modern Comfort</h3>
+          <p class="mt-1 text-[var(--color-muted)]">Thoughtful interiors, fast Wi-Fi, and a seamless self-check-in experience.</p>
+        </article>
+        <article class="rounded-[var(--radius)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-soft)] hover:-translate-y-0.5 transition">
+          <h3 class="text-lg font-semibold">Local Tips</h3>
+          <p class="mt-1 text-[var(--color-muted)]">Handpicked beaches, hikes, and tavernas to make the most of your stay.</p>
+        </article>
+      </div>
+    </section>
+  </main>
 </Layout>
