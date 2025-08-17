@@ -4,23 +4,31 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 type ApartmentEntry = CollectionEntry<"apartment">;
 
-const { slug } = Astro.params;
+// 1) Tell Astro which slugs to build
+export async function getStaticPaths() {
+  const apartments = await getCollection("apartment", ({ data }) => data.published !== false);
+  return apartments.map((entry) => ({
+    params: { slug: entry.slug },   // filename-based slug
+    props: { entry },               // pass the entry down
+  }));
+}
 
-// Fetch and find entry
-const apartments = await getCollection("apartment", (a: ApartmentEntry) => a.data.published !== false);
-const entry = apartments.find((a: ApartmentEntry) => a.slug === slug);
-if (!entry) throw new Error(`Apartment not found: ${slug}`);
+// 2) Receive the entry from props
+const { entry } = Astro.props as { entry: ApartmentEntry };
 
-const { data, body } = entry;
+// If you want Markdown content, render it:
+const rendered = await entry.render();
+const { Content } = rendered;
 
-// ✅ make gallery a typed array so .map() is happy
-const gallery: string[] = data.gallery ?? [];
+const { data } = entry;
 
-// SEO props for Layout
+// SEO
 const title = data.seo?.title ?? data.title;
 const description = data.seo?.description ?? data.description;
-// ✅ if you removed slug from frontmatter, use entry.slug (not data.slug)
 const canonical = data.seo?.canonical ?? `https://www.calamon.com/apartments/${entry.slug}`;
+
+// Gallery typed
+const gallery: string[] = data.gallery ?? [];
 
 // JSON-LD
 const jsonLd = {
@@ -29,7 +37,7 @@ const jsonLd = {
   name: data.title,
   description: data.description,
   image: data.heroImage ? `https://www.calamon.com${data.heroImage}` : undefined,
-  amenityFeature: (data.amenities || []).map((a: string) => ({
+  amenityFeature: (data.amenities ?? []).map((a: string) => ({
     "@type": "LocationFeatureSpecification",
     name: a,
     value: true
@@ -37,7 +45,6 @@ const jsonLd = {
   url: `https://www.calamon.com/apartments/${entry.slug}`
 };
 ---
-
 <Layout {title} {description} {canonical} jsonLd={jsonLd}>
   <article class="max-w-3xl mx-auto p-6">
     <h1 class="text-3xl font-semibold mb-4">{data.title}</h1>
@@ -49,16 +56,18 @@ const jsonLd = {
         class="mb-4 rounded-lg shadow"
         width="1200"
         height="675"
+        loading="lazy"
       />
     )}
 
+    <!-- Render the Markdown body -->
     <div class="prose">
-      {body}
+      <Content />
     </div>
 
     {gallery.length > 0 && (
       <section class="mt-6 grid gap-4 md:grid-cols-2">
-        {gallery.map((img: string) => (
+        {gallery.map((img) => (
           <img src={img} alt={`${data.title} photo`} class="rounded-md shadow" loading="lazy" />
         ))}
       </section>

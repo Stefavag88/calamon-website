@@ -1,0 +1,65 @@
+---
+interface Slide {
+  src: string;   // e.g. "/images/home/hero1.jpg"
+  alt: string;
+  title?: string;
+  text?: string;
+}
+
+const {
+  slides = [] as Slide[],
+  ariaLabel = "Highlights",
+  showDots = true,
+} = Astro.props;
+
+const ids: string[] = slides.map((_: Slide, i: number) => `slide-${i + 1}`);
+---
+
+<section aria-roledescription="carousel" aria-label={ariaLabel} class="relative">
+  <!-- Track: mobile-first full-width slides -->
+  <div
+    class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-4"
+    tabindex="0"
+  >
+    {slides.map((s: Slide, i: number) => (
+      <figure
+        id={ids[i]}
+        class="snap-start relative rounded-2xl overflow-hidden shadow min-w-full sm:min-w-[85%] md:min-w-[70%] lg:min-w-[60%]"
+      >
+        <img
+          src={s.src}
+          alt={s.alt}
+          class="block w-full h-[52svh] sm:h-[56svh] md:h-[60svh] lg:h-[70svh] object-cover"
+          loading={i === 0 ? "eager" : "lazy"}
+          width="1600"
+          height="900"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 85vw, 60vw"
+        />
+        {(s.title || s.text) && (
+          <figcaption class="absolute inset-x-0 bottom-0 p-4 sm:p-5 bg-black/40 text-white backdrop-blur-sm">
+            {s.title && <h3 class="text-lg sm:text-xl md:text-2xl font-semibold">{s.title}</h3>}
+            {s.text && <p class="mt-1 text-sm sm:text-base">{s.text}</p>}
+          </figcaption>
+        )}
+      </figure>
+    ))}
+  </div>
+
+  <!-- Dots: centered, tap-friendly -->
+  {showDots && slides.length > 1 && (
+    <nav class="absolute left-1/2 -translate-x-1/2 bottom-3 sm:bottom-4 flex gap-2" aria-label="Slide navigation">
+      {ids.map((id, i: number) => (
+        <a
+          href={`#${id}`}
+          class="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-white/70 hover:bg-white/90 outline-offset-2"
+          aria-label={`Go to slide ${i + 1}`}
+        />
+      ))}
+    </nav>
+  )}
+</section>
+
+<style>
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>

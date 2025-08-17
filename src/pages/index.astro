@@ -1,9 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Carousel from "../components/Carousel.astro";
 ---
 <Layout title="Welcome to Calamon" description="Apartments in Episkopi, Crete">
   <section class="p-6">
     <h1 class="text-3xl font-bold">Welcome to Calamon Apartments</h1>
     <p class="mt-2">Stay by the sea, enjoy Crete.</p>
+
+    <Carousel slides={[
+      {
+        src: "/images/home/hero1.jpg",
+        alt: "Calamon Apartments",
+        title: "Calamon Apartments",
+        text: "Your home away from home in Crete."
+      },
+      {
+        src: "/images/home/hero2.jpg",
+        alt: "Beachfront Views",
+        title: "Beachfront Views",
+        text: "Enjoy stunning views of the Mediterranean."
+      },
+      {
+        src: "/images/home/hero3.jpg",
+        alt: "Luxurious Interiors",
+        title: "Luxurious Interiors",
+        text: "Experience luxury and comfort in every room."
+      }
+    ]} />
   </section>
 </Layout>

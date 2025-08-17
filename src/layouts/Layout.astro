@@ -1,14 +1,26 @@
 ---
-const { title, description, canonical, jsonLd } = Astro.props;
+import "../styles/global.css";
+
+const { title = "Calamon", description = "", canonical, jsonLd } = Astro.props;
 ---
-<head>
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  {canonical && <link rel="canonical" href={canonical} />}
-  {jsonLd && (
-    <script type="application/ld+json">
-      {JSON.stringify(jsonLd)}
-    </script>
-  )}
-  <link rel="stylesheet" href="/src/styles/global.css" />
-</head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    {jsonLd && (
+      <script type="application/ld+json">
+        {JSON.stringify(jsonLd)}
+      </script>
+    )}
+    <!-- If you prefer linking a static file, put it in /public and use: -->
+    <!-- <link rel="stylesheet" href="/global.css" /> -->
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

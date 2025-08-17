@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
 import { getCollection, type CollectionEntry } from "astro:content";
 
 type ApartmentEntry = CollectionEntry<"apartment">;
@@ -11,7 +12,7 @@ const apartments: ApartmentEntry[] = (await getCollection(
 
 const title = "Apartments | Calamon";
 const description =
-  "Apartments in Kalamaki, Crete. Seaside stays with terrace views and easy beach access.";
+  "Apartments in Episkopi, Crete. Seaside stays with terrace views and easy beach access.";
 const canonical = "https://www.calamon.com/apartments";
 ---
 
