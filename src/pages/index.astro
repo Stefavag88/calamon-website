@@ -1,71 +1,82 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Carousel from "../components/Carousel.astro";
-
-const slides = [
-  {
-    src: "/images/home/hero1.jpg",
-    alt: "Sea view from Calamon terrace at sunset",
-    title: "Calamon Apartments",
-    text: "Your home away from home in Crete."
-  },
-  {
-    src: "/images/home/hero2.jpg",
-    alt: "Wide sandy beach near Episkopi",
-    title: "Beachfront Views",
-    text: "Enjoy stunning views of the Mediterranean."
-  },
-  {
-    src: "/images/home/hero3.jpg",
-    alt: "Modern living room interior",
-    title: "Luxurious Interiors",
-    text: "Experience luxury and comfort in every room."
-  }
-];
 ---
 
-<Layout title="Welcome to Calamon" description="Apartments in Episkopi, Crete">
+<Layout title="Calamon Luxury Apartments" description="Seaside luxury suites in Episkopi, Crete">
+  <!-- Preload hero for better LCP -->
+  <Fragment slot="head">
+    <link rel="preload" as="image" href="/images/home/hero1.jpg" imagesrcset="/images/home/hero1.avif 1x, /images/home/hero1.jpg 1x" />
+  </Fragment>
+
   <main>
-    <!-- Hero / Carousel -->
-    <section class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-      <h1 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-tight">
-        Welcome to Calamon Apartments
-      </h1>
-      <p class="mt-2 text-[var(--color-muted)]">
-        Stay by the sea, enjoy Crete.
-      </p>
+    <!-- HERO -->
+    <section class="relative min-h-[100svh]">
+      <picture>
+        <img src="/images/home/hero4.jpg" alt="" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" />
+      </picture>
 
-      <div class="mt-6">
-        <Carousel slides={slides} ariaLabel="Calamon highlights" />
-      </div>
+      <!-- Dark → transparent gradient for luxury feel / readability -->
+      <div class="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.55),rgba(0,0,0,.25),rgba(0,0,0,.4))]"></div>
 
-      <!-- Quick actions -->
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/apartments" class="inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium bg-[var(--color-brand)] text-black hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)] transition">
-          View Apartments
-        </a>
-        <a href="/contact" class="inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium bg-white/5 border border-white/10 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 transition">
-          Contact Us
-        </a>
+      <div class="relative z-10 flex min-h-[100svh] flex-col items-center justify-center text-center text-white px-6">
+        <!-- keep or remove logo; if kept, fix height -->
+        <img src="/images/logo/logo-4-white.png" alt="Calamon Logo" class="h-20" />
+
+        <h1 class="mt-4 text-5xl sm:text-6xl font-serif tracking-tight">Calamon Apartments</h1>
+        <p class="mt-3 text-lg sm:text-xl tracking-wide text-white/90">Luxury by the sea in Crete</p>
+
+        <div class="mt-8">
+          <a href="/apartments"
+             class="inline-block rounded-full border border-white px-8 py-3 text-lg tracking-wide hover:bg-white hover:text-black transition">
+            Explore Suites
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- Features -->
-    <section class="container mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <article class="rounded-[var(--radius)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-soft)] hover:-translate-y-0.5 transition">
-          <h3 class="text-lg font-semibold">Prime Location</h3>
-          <p class="mt-1 text-[var(--color-muted)]">Episkopi beach, Sfakia, and southern Crete highlights within easy reach.</p>
-        </article>
-        <article class="rounded-[var(--radius)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-soft)] hover:-translate-y-0.5 transition">
-          <h3 class="text-lg font-semibold">Modern Comfort</h3>
-          <p class="mt-1 text-[var(--color-muted)]">Thoughtful interiors, fast Wi-Fi, and a seamless self-check-in experience.</p>
-        </article>
-        <article class="rounded-[var(--radius)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-soft)] hover:-translate-y-0.5 transition">
-          <h3 class="text-lg font-semibold">Local Tips</h3>
-          <p class="mt-1 text-[var(--color-muted)]">Handpicked beaches, hikes, and tavernas to make the most of your stay.</p>
-        </article>
+    <!-- INTERIORS -->
+    <section class="grid md:grid-cols-2 mt-2">
+      <picture>
+        <img src="/images/home/hero1.jpg" alt="Elegant interior" class="h-full w-full object-cover" loading="lazy" />
+      </picture>
+
+      <div class="flex items-center justify-center bg-[var(--color-bg)] p-10 sm:p-16">
+        <div class="max-w-md">
+          <h2 class="text-3xl sm:text-4xl font-serif">Calmness and olive trees</h2>
+          <p class="mt-4 text-[var(--color-muted)] leading-relaxed">
+            Relax in minimalistic rooms surrounded by olive trees.
+          </p>
+        </div>
       </div>
+    </section>
+
+    <!-- FEATURES (light, airy) -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
+        <div>
+          <h3 class="text-xl font-serif">Prime Location</h3>
+          <p class="mt-1 text-[var(--color-muted)]">Episkopi beach, Sfakia, and southern Crete highlights within easy reach.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-serif">Modern Comfort</h3>
+          <p class="mt-1 text-[var(--color-muted)]">Fast Wi‑Fi, seamless check‑in, and thoughtfully designed spaces.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-serif">Local Insights</h3>
+          <p class="mt-1 text-[var(--color-muted)]">Handpicked beaches, hikes, and tavernas for a memorable stay.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="text-center py-20 bg-[var(--color-surface)]">
+      <h2 class="text-3xl sm:text-4xl font-serif">Plan Your Stay at Calamon</h2>
+      <a
+        href="/contact"
+        class="mt-6 inline-block rounded-full border border-[var(--color-brand)] text-[var(--color-brand)]
+               px-8 py-3 text-lg tracking-wide hover:bg-[var(--color-brand)] hover:text-white transition">
+        Contact Us
+      </a>
     </section>
   </main>
 </Layout>

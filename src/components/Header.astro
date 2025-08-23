@@ -1,71 +1,120 @@
 ---
 const pathname = Astro.url.pathname;
+const isHome = true;
 
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/apartments", label: "Apartments" },
-  { href: "/location", label: "Location" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];
 
 const isActive = (href: string) =>
-  href === "/"
-    ? pathname === "/"
-    : pathname.startsWith(href);
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+// Shell + link styles (unchanged)
+const shell = isHome
+  ? "bg-transparent text-white"
+  : "bg-[color:var(--color-surface)]/90 text-[color:var(--color-text)] border-b border-[color:var(--color-border)] backdrop-blur";
+
+const linkBase = "px-2 py-1.5 text-sm tracking-wide transition-colors";
+const linkHover = isHome ? "hover:text-white/90" : "hover:text-black";
+const linkInactive = isHome
+  ? "text-white/80"
+  : "text-[color:var(--color-text)]/80";
+const ctaBase = "rounded-full px-4 py-2 text-sm tracking-wide transition";
+const ctaStyle = isHome
+  ? "border border-white text-white hover:bg-white hover:text-black"
+  : "border border-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-white";
+
+// NEW: elegant underline class generator
+const linkClass = (href: string) => {
+  const active = isActive(href);
+  const underlineColor = isHome
+    ? "after:bg-white"
+    : "after:bg-[var(--color-brand)]";
+  const textWhenActive = isHome ? "text-white" : "text-[var(--color-text)]";
+
+  // Base + pseudo underline
+  const base = `${linkBase} ${linkHover} relative ${underlineColor} 
+    after:block after:content-[''] after:h-[2px] after:rounded-full 
+    after:transition-all after:duration-300 after:mx-auto after:mt-1`;
+
+  // Active = visible underline; Inactive = reveal on hover
+  return active
+    ? `${base} ${textWhenActive} after:w-6`
+    : `${base} ${linkInactive} after:w-0 hover:after:w-6`;
+};
 ---
 
-<header class="sticky top-0 z-50 bg-[var(--color-surface)]/90 backdrop-blur border-b border-[var(--color-border)]">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-    <!-- Brand -->
-    <a href="/" class="flex items-center gap-2 font-semibold text-lg tracking-tight">
+<header class={`fixed inset-x-0 top-0 z-50 ${shell}`}>
+  <nav
+    class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+  >
+    <!-- Brand (same as you had) -->
+    <a
+      href="/"
+      class="flex items-center gap-2 font-semibold text-lg tracking-tight"
+    >
       <!-- Simple logo mark -->
-      <svg viewBox="0 0 24 24" class="w-6 h-6" aria-hidden="true">
-        <path d="M3 12c5-6 13-6 18 0M5 15c4-4 10-4 14 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="12" cy="17" r="1.5" fill="currentColor"/>
-      </svg>
-      Calamon
+      <img
+        src="/images/logo/logo-4-white-sm.png"
+        alt="Calamon Logo"
+        height="50"
+      /> Calamon
     </a>
 
-    <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center gap-1" aria-label="Primary">
-      {nav.map((item) => (
-        <a
-          href={item.href}
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition
-            ${isActive(item.href)
-              ? "bg-[var(--color-brand)] text-white"
-              : "text-[var(--color-text)] hover:bg-black/5"}`}
-        >
-          {item.label}
-        </a>
-      ))}
-    </nav>
+    <!-- Desktop nav with luxury underline -->
+    <div class="hidden md:flex items-center gap-6">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class={linkClass(item.href)}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
 
-    <!-- Mobile menu (no JS, uses <details>) -->
+    <!-- Mobile (kept as-is; keep your bg highlights) -->
     <details class="md:hidden">
       <summary
-        class="list-none p-2 -mr-2 rounded-lg hover:bg-black/5 cursor-pointer"
+        class="list-none p-2 -m-2 rounded-md cursor-pointer hover:opacity-90"
         aria-label="Open menu"
       >
         <svg viewBox="0 0 24 24" class="w-6 h-6" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path
+            d="M4 7h16M4 12h16M4 17h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"></path>
         </svg>
       </summary>
-      <div class="mt-2 absolute left-0 right-0 bg-[var(--color-surface)] border-t border-[var(--color-border)] shadow-[var(--shadow-soft)]">
-        <nav class="px-4 py-3 flex flex-col gap-1" aria-label="Mobile">
-          {nav.map((item) => (
-            <a
-              href={item.href}
-              class={`px-3 py-2 rounded-lg text-sm font-medium transition
-                ${isActive(item.href)
-                  ? "bg-[var(--color-brand)] text-white"
-                  : "text-[var(--color-text)] hover:bg-black/5"}`}
-            >
-              {item.label}
-            </a>
-          ))}
+      <div
+        class={`mt-3 absolute left-0 right-0 ${isHome ? "bg-black/80 text-white" : "bg-[var(--color-surface)] text-[var(--color-text)]"} backdrop-blur border-t border-[color:var(--color-border)]`}
+      >
+        <nav class="px-4 py-4 flex flex-col gap-2" aria-label="Mobile">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class={`px-3 py-2 rounded-lg text-sm ${
+                  isActive(item.href)
+                    ? isHome
+                      ? "bg-white/10 text-white"
+                      : "bg-black/5"
+                    : ""
+                }`}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
         </nav>
       </div>
     </details>
-  </div>
+  </nav>
 </header>
