@@ -1,9 +1,12 @@
 ---
+import { Image } from "astro:assets";
+import logo from "../assets/logo/logo-4-white-sm.png"; // ← adjust relative path if this file lives deeper
+
 const pathname = Astro.url.pathname;
 
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/gallery", label: "Gallery" },
+  //{ href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -11,7 +14,7 @@ const isActive = (href: string) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 
 // Shell styles
-const shell = "bg-gradient-to-b from-white/25 to-white/0 text-[color:var(--color-white)] backdrop-blur-xs"
+const shell = "bg-gradient-to-b from-white/15 to-white/0 text-[color:var(--color-white)] backdrop-blur-xs"
 
 // Link styles
 const linkBase = "px-2 py-2 text-sm tracking-wide transition-colors";
@@ -33,17 +36,18 @@ const linkClass = (href: string) => {
 
 <header class={`fixed inset-x-0 top-0 z-50 ${shell}`}>
   <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-    <!-- Logo (uses currentColor to adapt) -->
-    <a
-      href="/"
-      class="flex items-center gap-2 font-semibold text-lg tracking-tight"
-    >
-      <!-- Simple logo mark -->
-      <img
-        src="/images/logo/logo-4-white-sm.png"
+    <!-- Logo (optimized via astro:assets + Unpic service) -->
+    <a href="/" class="flex items-center gap-2 font-semibold text-lg tracking-tight">
+      <Image
+        src={logo}
         alt="Calamon Logo"
-        height="50"
-      /> Calamon
+        widths={[96, 128, 160, 192]}                         
+        sizes="(min-width:768px) 160px, 128px"               
+        loading="eager"                                     
+        decoding="async"
+        class="h-[50px] w-auto"                              
+      />
+      Calamon
     </a>
 
     <!-- Desktop nav -->
@@ -66,12 +70,12 @@ const linkClass = (href: string) => {
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </summary>
-      <div class="mt-3 absolute left-0 right-0 bg-white/95 text-[var(--color-white)] backdrop-blur-sm border-t border-[color:var(--color-border)]">
+      <div class="mt-3 absolute left-0 right-0 bg-transparent text-[var(--color-white)] backdrop-blur-sm border-t border-[color:var(--color-border)] hover:bg-white/5">
         <nav class="px-4 py-4 flex flex-col gap-2" aria-label="Mobile">
           {nav.map((item) => (
             <a
               href={item.href}
-              class={`px-3 py-2 rounded-lg text-sm ${isActive(item.href) ? "bg-black/5" : ""}`}
+              class={`px-3 py-2 rounded-lg text-sm  hover:bg-white/20 ${isActive(item.href) ? "bg-black/5" : ""}`}
               aria-current={isActive(item.href) ? "page" : undefined}
             >
               {item.label}

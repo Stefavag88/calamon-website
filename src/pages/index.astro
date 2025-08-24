@@ -1,4 +1,14 @@
 ---
+import { Image } from "astro:assets";
+import { Image as UnpicImage } from "@unpic/astro"; // Unpic just for the hero
+
+// Images
+import hero9 from "../assets/home/hero9.jpg";
+import hero4 from "../assets/home/hero4.jpg";
+import olivesView from "../assets/home/olives-view.jpg";
+import stairs from "../assets/home/stairs.jpg";
+import logo4White from "../assets/logo/logo-4-white.png";
+
 import Layout from "../layouts/Layout.astro";
 import {
   PawPrint,
@@ -11,215 +21,243 @@ import {
   Home,
   ExternalLink,
   Check,
-  KeySquare,   // ✅ add this
+  KeySquare,
+  Car
 } from "@lucide/astro";
 
-// Replace with your real URLs (or pull from env)
-const bookingUrl = "https://www.booking.com/hotel/gr/your-listing";
-const airbnbUrl  = "https://www.airbnb.com/rooms/your-listing";
+// External listings
+const bookingUrl =
+  "https://www.booking.com/hotel/gr/calamon-apartments.en-gb.html?aid=356980&label=gog235jc-10CAsoXEISY2FsYW1vbi1hcGFydG1lbnRzSDNYA2hciAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALj9azFBsACAdICJGJmOTE4NjZlLTFmNjQtNGQ4Ny04ODc5LWVmOTZlOWYwYjgzMdgCAeACAQ&sid=05839a4e68a790da7a89828d58a29a2b&dest_id=-817017&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1756052204&srpvid=88ec7273bfaf069f&type=total&ucfs=1&";
+const airbnbUrl =
+  "https://www.airbnb.com/rooms/12843947?search_mode=regular_search&adults=1&check_in=2025-09-01&check_out=2025-09-06&children=0&infants=0&pets=0&source_impression_id=p3_1756052366_P3afZVbecfpE_yF5&previous_page_section_name=1000&federated_search_id=2faf620a-733d-4a85-b909-b4aa9a2b030e";
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "LodgingBusiness",
-  "name": "Calamon Apartments",
-  "url": "https://calamon.com",
-  "sameAs": [bookingUrl, airbnbUrl]
+  name: "Calamon Apartments",
+  url: "https://calamon.com",
+  sameAs: [bookingUrl, airbnbUrl],
 };
 ---
 
 <Layout
-  title="Calamon Apartments — Peaceful Stays in Crete"
-  description="Simple, quiet apartments in beautiful natural surroundings between Rethymno & Chania — large pool, pet‑friendly, and away from the crowds."
+  title="Calamon Apartments — Peaceful stays in Crete"
+  description="Simple, quiet apartments between Rethymno & Chania — big pool, pet-friendly, and surrounded by nature."
 >
   <Fragment slot="head">
-    <link rel="preload" as="image" href="/images/home/hero1.jpg" imagesrcset="/images/home/hero1.avif 1x, /images/home/hero1.jpg 1x" />
     <script type="application/ld+json">{JSON.stringify(schema)}</script>
   </Fragment>
 
   <main>
     <!-- HERO -->
-    <section class="relative min-h-[90svh]">
-      <img src="/images/home/hero5.jpg" alt="Pool and olive trees at Calamon Apartments, Crete" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" />
-      <div class="absolute inset-0 bg-black/40"></div>
+    <section class="relative h-[80svh] overflow-hidden">
+      <UnpicImage
+        src={hero9.src}
+        alt="Pool and olive trees at Calamon Apartments, Crete"
+        layout="fullWidth"
+        priority
+        placeholder="blurhash"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 bg-black/30"></div>
 
-      <div class="relative z-10 flex min-h-[90svh] items-center justify-center px-6">
-        <div class="max-w-3xl w-full text-center text-white">
-          <img src="/images/logo/logo-4-white.png" alt="Calamon logo" class="mx-auto h-16 md:h-20" />
+      <div class="relative z-10 flex items-center justify-center px-6 mt-12">
+        <div class="max-w-3xl w-full text-center text-white mt-12">
+          <Image
+            src={logo4White}
+            alt="Calamon logo"
+            width={180}
+            loading="eager"
+            decoding="async"
+            class="mx-auto md:w-[200px] h-auto"
+          />
+
           <div class="mt-6 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-8">
-            <h1 class="text-4xl sm:text-5xl font-serif tracking-tight">Peaceful stays in Crete’s nature</h1>
+            <h1 class="text-4xl sm:text-5xl font-serif tracking-tight">
+              Slow days. Big skies. Real Crete.
+            </h1>
             <p class="mt-3 text-base sm:text-lg text-white/90">
-              Simple, welcoming apartments with a large pool — pet‑friendly, honest, and away from the crowds.
+              Simple, welcoming apartments nestled among olive trees—quiet, pet-friendly, and with a big pool for long, lazy swims.
             </p>
 
-            <!-- Badges -->
-            <ul class="mt-5 flex flex-wrap justify-center gap-2 text-sm">
-              <li class="inline-flex items-center gap-2 rounded-full border border-white/70 px-3 py-1">
-                <Waves class="h-4 w-4" /> Large pool
-              </li>
-              <li class="inline-flex items-center gap-2 rounded-full border border-white/70 px-3 py-1">
-                <PawPrint class="h-4 w-4" /> Pet friendly
-              </li>
-              <li class="inline-flex items-center gap-2 rounded-full border border-white/70 px-3 py-1">
-                <Trees class="h-4 w-4" /> Quiet setting
-              </li>
-              <li class="inline-flex items-center gap-2 rounded-full border border-white/70 px-3 py-1">
-                <Leaf class="h-4 w-4" /> Fair approach
-              </li>
-            </ul>
-
-            <!-- CTAs -->
             <div class="mt-6 flex flex-wrap justify-center gap-3">
               <a href={bookingUrl} target="_blank" rel="noopener"
                  class="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-base font-medium hover:opacity-90 transition">
                 <Calendar class="h-5 w-5" />
-                Booking.com — Availability
+                Check availability (Booking.com)
               </a>
               <a href={airbnbUrl} target="_blank" rel="noopener"
                  class="inline-flex items-center gap-2 rounded-full border border-white/70 text-white px-6 py-3 text-base hover:bg-white/10 transition">
                 <Home class="h-5 w-5" />
-                Airbnb — Availability
+                Read reviews (Airbnb)
               </a>
             </div>
 
-            <p class="mt-3 text-xs text-white/80">Live prices, reviews, and policies on Booking.com / Airbnb.</p>
+            <p class="mt-3 text-xs text-white/80">
+              Live prices, reviews & policies on Booking.com / Airbnb.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- WHY CHOOSE CALAMON -->
+    <!-- MINI GALLERY -->
+    <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+      <div class="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+        <figure class="relative aspect-[4/3] overflow-hidden rounded-2xl">
+          <Image
+            src={hero4}
+            alt="Pool terrace with seating"
+            widths={[360, 640, 960, 1200]}
+            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+          <figcaption class="sr-only">Pool terrace with seating</figcaption>
+        </figure>
+
+        <figure class="relative aspect-[4/3] overflow-hidden rounded-2xl">
+          <Image
+            src={olivesView}
+            alt="Olive-tree path near the apartments"
+            widths={[360, 640, 960, 1200]}
+            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+          <figcaption class="sr-only">Olive-tree path</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- WHAT GUESTS LOVE -->
     <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-center text-3xl font-serif">Why guests choose Calamon</h2>
+      <h2 class="text-center text-3xl font-serif">What guests love about Calamon</h2>
       <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:shadow-md transition">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]">
-            <Trees class="h-6 w-6" />
-          </div>
-          <h3 class="mt-4 text-lg font-semibold text-center">Peace & Nature</h3>
-          <p class="mt-1 text-center text-[var(--color-muted)]">Quiet, uncrowded surroundings among olive trees.</p>
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]"><Trees class="h-6 w-6" /></div>
+          <h3 class="mt-4 text-lg font-semibold text-center">Peace & nature</h3>
+          <p class="mt-1 text-center text-[var(--color-muted)]">Olive trees, open skies, and a calm, uncrowded setting.</p>
         </div>
+
         <div class="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:shadow-md transition">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]">
-            <Waves class="h-6 w-6" />
-          </div>
-          <h3 class="mt-4 text-lg font-semibold text-center">Large Pool</h3>
-          <p class="mt-1 text-center text-[var(--color-muted)]">Morning dips, sunset swims, open views.</p>
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]"><Waves class="h-6 w-6" /></div>
+          <h3 class="mt-4 text-lg font-semibold text-center">A pool made for pausing</h3>
+          <p class="mt-1 text-center text-[var(--color-muted)]">Cool morning dips, golden-hour swims, stars after dark.</p>
         </div>
+
         <div class="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:shadow-md transition">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]">
-            <PawPrint class="h-6 w-6" />
-          </div>
-          <h3 class="mt-4 text-lg font-semibold text-center">Pet Friendly</h3>
-          <p class="mt-1 text-center text-[var(--color-muted)]">We welcome well‑behaved pets (simple rules).</p>
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]"><PawPrint class="h-6 w-6" /></div>
+          <h3 class="mt-4 text-lg font-semibold text-center">Pets welcome</h3>
+          <p class="mt-1 text-center text-[var(--color-muted)]">Bring your best friend—simple, sensible house rules.</p>
         </div>
+
         <div class="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:shadow-md transition">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]">
-            <Leaf class="h-6 w-6" />
-          </div>
-          <h3 class="mt-4 text-lg font-semibold text-center">Honest & Simple</h3>
-          <p class="mt-1 text-center text-[var(--color-muted)]">Straightforward stays, no fuss, no noise.</p>
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg)]"><Car class="h-6 w-6" /></div>
+          <h3 class="mt-4 text-lg font-semibold text-center">Free parking</h3>
+          <p class="mt-1 text-center text-[var(--color-muted)]">Plenty of shady spots on-site.</p>
         </div>
+
       </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- STORY / ETHOS -->
     <section class="grid md:grid-cols-2 items-stretch">
-      <img src="/images/home/hero1.jpg" alt="Quiet olive‑tree corner at Calamon" class="h-full w-full object-cover" loading="lazy" />
+      <div class="relative">
+        <Image
+          src={stairs}
+          alt="Welcoming stairs"
+          widths={[640, 960, 1440, 1920]}
+          sizes="(min-width:768px) 50vw, 100vw"
+          loading="lazy"
+          decoding="async"
+          class="block h-full w-full object-cover"
+        />
+        <!-- fade into content panel only on larger screens -->
+        <div
+          class="pointer-events-none absolute inset-0 z-10 hidden md:block"
+          style="background: linear-gradient(to right, rgba(255,255,255,0) 65%, var(--color-bg) 100%);"
+        ></div>
+      </div>
+
       <div class="flex items-center bg-[var(--color-bg)] p-10 sm:p-16">
         <div class="max-w-md">
-          <h2 class="text-3xl sm:text-4xl font-serif">Calm, simple, welcoming</h2>
+          <h2 class="text-3xl sm:text-4xl font-serif">Simple on purpose</h2>
           <p class="mt-4 text-[var(--color-muted)] leading-relaxed">
-            Calamon isn’t a luxury resort — it’s a relaxed base in beautiful natural scenery.
-            Unwind by the pool, wander among olive trees, and sleep in quiet. Bring your pets and take things at your own pace.
+            Calamon isn’t a luxury resort. It’s a quiet base to slow down: read by the pool, nap in the shade, wander the olive paths, and drift off to the sound of cicadas. Come as you are—solo, with friends, or with the dog.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- LOCATION -->
-    <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-center text-3xl font-serif">A beautiful base between Rethymno & Chania</h2>
-      <p class="mt-3 max-w-3xl mx-auto text-center text-[var(--color-muted)]">
-        Close to Kourna Lake, Georgioupolis, Vrysses, and the wide sandy beach of Petre — where scuba lessons are offered.
+    <!-- LOCATION & NEARBY (one cohesive section) -->
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+  <div class="grid md:grid-cols-5 gap-10 items-start">
+    <!-- Copy + quick chips -->
+    <div class="md:col-span-2 text-center md:text-left">
+      <h2 class="text-3xl font-serif">In the sweet spot between Rethymno & Chania</h2>
+      <p class="mt-3 text-[var(--color-muted)]">
+        Wake up among olive trees—and be a short, easy drive from lakes, beaches, and proper Cretan food.
+        Base yourself somewhere beautiful, with everything you want close by.
       </p>
-      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div class="flex items-center gap-3">
-            <MapPin class="h-5 w-5" />
-            <h3 class="font-semibold">Between two cities</h3>
-          </div>
-          <p class="mt-2 text-[var(--color-muted)]">Easy day‑trips to both Rethymno & Chania.</p>
-        </div>
-        <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div class="flex items-center gap-3">
-            <Waves class="h-5 w-5" />
-            <h3 class="font-semibold">Kourna Lake</h3>
-          </div>
-          <p class="mt-2 text-[var(--color-muted)]">Freshwater lake with mountain backdrop.</p>
-        </div>
-        <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div class="flex items-center gap-3">
-            <MapPin class="h-5 w-5" />
-            <h3 class="font-semibold">Georgioupolis & Vrysses</h3>
-          </div>
-          <p class="mt-2 text-[var(--color-muted)]">Seaside charm & traditional village life.</p>
-        </div>
-        <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div class="flex items-center gap-3">
-            <LifeBuoy class="h-5 w-5" />
-            <h3 class="font-semibold">Petre Beach (Scuba)</h3>
-          </div>
-          <p class="mt-2 text-[var(--color-muted)]">Wide sandy beach; scuba lessons available.</p>
-        </div>
-      </div>
-    </section>
 
-    <!-- WHAT TO EXPECT -->
-    <section class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-12">
-      <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-10">
-        <h2 class="text-2xl sm:text-3xl font-serif">What to expect</h2>
-        <ul class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-[var(--color-muted)]">
-          <li class="flex items-start gap-2">
-            <Check class="mt-1 h-5 w-5" />
-            Thoughtfully simple apartments (kitchen/kitchenette, AC, Wi‑Fi)
-          </li>
-          <li class="flex items-start gap-2">
-            <Check class="mt-1 h-5 w-5" />
-            Large shared pool and sunny loungers
-          </li>
-          <li class="flex items-start gap-2">
-            <Check class="mt-1 h-5 w-5" />
-            Pet‑friendly stays (on request; simple rules)
-          </li>
-          <li class="flex items-start gap-2">
-            <Check class="mt-1 h-5 w-5" />
-            Quiet surroundings — not a party scene
-          </li>
-          <li class="flex items-start gap-2">
-            <Check class="mt-1 h-5 w-5" />
-            Free parking & easy self check‑in
-          </li>
-          <li class="flex items-start gap-2">
-            <Check class="mt-1 h-5 w-5" />
-            Live prices & availability via Booking.com / Airbnb
-          </li>
-        </ul>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href={bookingUrl} target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 rounded-full border border-[var(--color-brand)] text-[var(--color-brand)] px-6 py-3 hover:bg-[var(--color-brand)] hover:text-white transition">
-            <Calendar class="h-5 w-5" />
-            Booking.com — Availability
-          </a>
-          <a href={airbnbUrl} target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] text-[var(--color-text)] px-6 py-3 hover:bg-[var(--color-text)] hover:text-white transition">
-            <Home class="h-5 w-5" />
-            Airbnb — Availability
-          </a>
-        </div>
-      </div>
-    </section>
+      <a
+        href="/contact"
+        class="mt-12 inline-flex items-center gap-2 rounded-full border border-[var(--color-brand)] text-[var(--color-brand)]
+               px-6 py-3 text-md hover:bg-[var(--color-brand)] hover:text-white transition"
+      >
+        Ask for local tips
+      </a>
+    </div>
 
-    <!-- FAQ -->
+    <!-- Highlight cards -->
+    <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <div class="flex items-center gap-3">
+          <Waves class="h-5 w-5" />
+          <h3 class="font-semibold">Kourna Lake</h3>
+        </div>
+        <p class="mt-2 text-[var(--color-muted)]">
+          Freshwater, mountain backdrop, paddle boats—cool and calm even on warm days.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <div class="flex items-center gap-3">
+          <MapPin class="h-5 w-5" />
+          <h3 class="font-semibold">Georgioupolis & Vrysses</h3>
+        </div>
+        <p class="mt-2 text-[var(--color-muted)]">
+          Seaside strolls, a little chapel on the water, and village tavernas that do it right.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <div class="flex items-center gap-3">
+          <LifeBuoy class="h-5 w-5" />
+          <h3 class="font-semibold">Petre Beach</h3>
+        </div>
+        <p class="mt-2 text-[var(--color-muted)]">
+          Wide sandy stretch for swims and sunsets—scuba lessons available if you fancy.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <div class="flex items-center gap-3">
+          <MapPin class="h-5 w-5" />
+          <h3 class="font-semibold">Easy day trips</h3>
+        </div>
+        <p class="mt-2 text-[var(--color-muted)]">
+          East or west without packing up—your base is central, quiet, and well-connected.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- FAQ (friendly tone) -->
     <section class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pb-6">
       <h2 class="text-center text-2xl sm:text-3xl font-serif">Good to know</h2>
       <div class="mt-6 space-y-3">
@@ -228,22 +266,28 @@ const schema = {
             <span class="inline-flex items-center gap-2"><PawPrint class="h-5 w-5" /> Pet policy</span>
             <span aria-hidden="true" class="transition group-open:rotate-180">⌄</span>
           </summary>
-          <p class="mt-3 text-[var(--color-muted)]">Well‑behaved pets are welcome. Please mention your pet when booking; simple house rules apply.</p>
+          <p class="mt-3 text-[var(--color-muted)]">
+            We’re pet-friendly. Please mention your pet when booking so we can make it comfy for everyone.
+          </p>
         </details>
+
         <details class="group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
           <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
-            <span class="inline-flex items-center gap-2"><KeySquare class="h-5 w-5" /> Check‑in / Check‑out</span>
+            <span class="inline-flex items-center gap-2"><KeySquare class="h-5 w-5" /> Check-in / check-out</span>
             <span aria-hidden="true" class="transition group-open:rotate-180">⌄</span>
           </summary>
-          <p class="mt-3 text-[var(--color-muted)]">We offer easy self check‑in. Exact times and instructions are provided on Booking.com / Airbnb.</p>
+          <p class="mt-3 text-[var(--color-muted)]">
+            Easy self check-in. Exact times and instructions are listed on Booking.com / Airbnb with your reservation.
+          </p>
         </details>
       </div>
     </section>
 
     <!-- FINAL CTA -->
     <section class="text-center py-20 bg-[var(--color-surface)]">
-      <h2 class="text-3xl sm:text-4xl font-serif">Ready for a peaceful stay?</h2>
-      <p class="mt-2 text-[var(--color-muted)]">Check live availability, prices, reviews, and policies on the platforms below.</p>
+      <h2 class="text-3xl sm:text-4xl font-serif">Ready when you are</h2>
+      <p class="mt-2 text-[var(--color-muted)]">Plan your dates, read real guest reviews, and book with confidence.</p>
+
       <div class="mt-6 flex items-center justify-center gap-3">
         <a href={bookingUrl} target="_blank" rel="noopener"
            class="inline-flex items-center gap-2 rounded-full border border-[var(--color-brand)] text-[var(--color-brand)] px-8 py-3 text-lg tracking-wide hover:bg-[var(--color-brand)] hover:text-white transition">
