@@ -25,6 +25,9 @@ import {
   Car
 } from "@lucide/astro";
 
+//cms
+import home from "../content/cms/home.json";
+
 // External listings
 const bookingUrl =
   "https://www.booking.com/hotel/gr/calamon-apartments.en-gb.html?aid=356980&label=gog235jc-10CAsoXEISY2FsYW1vbi1hcGFydG1lbnRzSDNYA2hciAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALj9azFBsACAdICJGJmOTE4NjZlLTFmNjQtNGQ4Ny04ODc5LWVmOTZlOWYwYjgzMdgCAeACAQ&sid=05839a4e68a790da7a89828d58a29a2b&dest_id=-817017&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1756052204&srpvid=88ec7273bfaf069f&type=total&ucfs=1&";
@@ -74,11 +77,11 @@ const schema = {
 
           <div class="mt-6 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-8">
             <h1 class="text-4xl sm:text-5xl font-serif tracking-tight">
-              Slow days. Big skies. Real Crete.
-            </h1>
-            <p class="mt-3 text-base sm:text-lg text-white/90">
-              Simple, welcoming apartments nestled among olive trees—quiet, pet-friendly, and with a big pool for long, lazy swims.
-            </p>
+  {home.heroTitle}
+</h1>
+<p class="mt-3 text-base sm:text-lg text-white/90">
+  {home.heroSubtitle}
+</p>
 
             <div class="mt-6 flex flex-wrap justify-center gap-3">
               <a href={bookingUrl} target="_blank" rel="noopener"
@@ -285,8 +288,8 @@ const schema = {
 
     <!-- FINAL CTA -->
     <section class="text-center py-20 bg-[var(--color-surface)]">
-      <h2 class="text-3xl sm:text-4xl font-serif">Ready when you are</h2>
-      <p class="mt-2 text-[var(--color-muted)]">Plan your dates, read real guest reviews, and book with confidence.</p>
+      <h2 class="text-3xl sm:text-4xl font-serif">{home.finalCtaTitle}</h2>
+      <p class="mt-2 text-[var(--color-muted)]">{home.finalCtaSubtitle}</p>
 
       <div class="mt-6 flex items-center justify-center gap-3">
         <a href={bookingUrl} target="_blank" rel="noopener"

@@ -2,33 +2,32 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "public/images"
-public_folder: "/images"
+local_backend: true
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
 
 collections:
-  - name: "apartment"
-    label: "Apartments"
-    folder: "src/content/apartment"
-    create: true
-    slug: "{{slug}}"
-    extension: "mdx"
-    fields:
-      - { name: title, label: Title }
-      - { name: slug, label: Slug }
-      - { name: description, label: Description, widget: text }
-      - { name: heroImage, label: Hero Image, widget: image }
-      - name: gallery
-        label: Gallery
-        widget: list
-        field: { name: image, label: Image, widget: image }
-      - { name: amenities, label: Amenities, widget: list }
-      - name: seo
-        label: SEO
-        widget: object
-        collapsed: true
+  - name: home
+    label: Homepage
+    files:
+      - name: homeContent                 # <-- required
+        file: "src/content/home.json"
+        label: "Homepage Content"
         fields:
-          - { name: title, label: SEO Title }
-          - { name: description, label: SEO Description, widget: text }
-          - { name: canonical, label: Canonical URL, required: false }
-      - { name: published, label: Published, widget: boolean, default: true }
-      - { name: order, label: Order, widget: number, default: 0 }
+          - { name: heroTitle, label: "Hero Title", widget: string }
+          - { name: heroSubtitle, label: "Hero Subtitle", widget: text }
+          - { name: finalCtaTitle, label: "Final CTA Title", widget: string, required: false }
+          - { name: finalCtaSubtitle, label: "Final CTA Subtitle", widget: text, required: false }
+
+  - name: contact
+    label: "Contact Page"
+    files:
+      - name: contactContent              # <-- required
+        file: "src/content/contact.json"
+        label: "Contact Page"
+        fields:
+          - { name: headline, label: "Headline", widget: string }
+          - { name: subheadline, label: "Subheadline", widget: text }
+          - { name: bannerSuccess, label: "Success Banner", widget: text, required: false }
+          - { name: bannerError, label: "Error Banner", widget: text, required: false }
