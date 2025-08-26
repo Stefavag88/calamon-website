@@ -1,7 +1,11 @@
 ---
-import { Image as UnpicImage } from "@unpic/astro"; 
+import { Image as UnpicImage } from "@unpic/astro";
+import { Image } from "astro:assets";
 import hero6 from "../assets/home/hero6.jpg";
-
+import whatsappIcon from "../assets/svg/whatsapp.svg";
+import viberIcon from "../assets/svg/viber.svg";
+import bookingIcon from "../assets/svg/booking.svg";
+import airbnbIcon from "../assets/svg/airbnb.svg";
 import Layout from "../layouts/Layout.astro";
 import {
   Mail,
@@ -11,13 +15,11 @@ import {
   Send,
   CheckCircle2,
   AlertTriangle,
-  MapPin,
   Home,
-  ExternalLink,
   PawPrint,
 } from "@lucide/astro";
 
-//CMS
+// CMS
 import contactJson from "../content/cms/contact.json";
 
 // success / error query handling
@@ -26,142 +28,286 @@ const success = q.get("success") === "1";
 const error = q.get("error") === "1";
 
 // (optional) centralize platform URLs; or move to env
-const bookingUrl = "https://www.booking.com/hotel/gr/calamon-apartments.en-gb.html?aid=356980&label=gog235jc-10CAsoXEISY2FsYW1vbi1hcGFydG1lbnRzSDNYA2hciAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALj9azFBsACAdICJGJmOTE4NjZlLTFmNjQtNGQ4Ny04ODc5LWVmOTZlOWYwYjgzMdgCAeACAQ&sid=05839a4e68a790da7a89828d58a29a2b&dest_id=-817017&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1756052204&srpvid=88ec7273bfaf069f&type=total&ucfs=1&"
-const airbnbUrl  = "https://www.airbnb.com/rooms/12843947?search_mode=regular_search&adults=1&check_in=2025-09-01&check_out=2025-09-06&children=0&infants=0&pets=0&source_impression_id=p3_1756052366_P3afZVbecfpE_yF5&previous_page_section_name=1000&federated_search_id=2faf620a-733d-4a85-b909-b4aa9a2b030e";
+const bookingUrl =
+  "https://www.booking.com/hotel/gr/calamon-apartments.en-gb.html?aid=356980&label=gog235jc-10CAsoXEISY2FsYW1vbi1hcGFydG1lbnRzSDNYA2hciAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALj9azFBsACAdICJGJmOTE4NjZlLTFmNjQtNGQ4Ny04ODc5LWVmOTZlOWYwYjgzMdgCAeACAQ&sid=05839a4e68a790da7a89828d58a29a2b&dest_id=-817017&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1756052204&srpvid=88ec7273bfaf069f&type=total&ucfs=1&";
+const airbnbUrl =
+  "https://www.airbnb.com/rooms/12843947?search_mode=regular_search&adults=1&check_in=2025-09-01&check_out=2025-09-06&children=0&infants=0&pets=0&source_impression_id=p3_1756052366_P3afZVbecfpE_yF5&previous_page_section_name=1000&federated_search_id=2faf620a-733d-4a85-b909-b4aa9a2b030e";
+
+// Messaging shortcuts
+const email = "calamon@otenet.gr";
+const phoneE164 = "30 697 4646203"; // ← your full number without '+'
+const waLink = `https://wa.me/${phoneE164}`;
+const viberLink = `viber://chat?number=%2B${phoneE164}`; // needs '+' encoded as %2B
 ---
 
-<Layout title="Contact Calamon" description="Get in touch to plan your peaceful stay between Rethymno & Chania.">
+<Layout
+  title="Contact Calamon"
+  description="Get in touch to plan your peaceful stay between Rethymno & Chania."
+>
   <main>
+    <!-- Hero -->
     <section class="relative h-[40svh] overflow-hidden">
       <UnpicImage
         src={hero6.src}
         alt="Pool and olive trees at Calamon Apartments, Crete"
         layout="fullWidth"
         priority
-           placeholder="blurhash"
-           class="absolute inset-0 h-full w-full object-cover"
-         />
+        placeholder="blurhash"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
       <div
-         class="pointer-events-none absolute inset-0 z-10"
-         style="background: linear-gradient(to bottom, rgba(255,255,255,0) 70%, var(--color-bg) 100%);"
-      ></div>
-    
-     <div class="absolute inset-0 bg-black/40"></div>
-    
-     <div class="relative z-10 h-full flex items-center justify-center text-center px-6">
-       <div class="max-w-2xl">
-         <h1 class="text-white text-4xl sm:text-5xl font-serif">{contactJson.headline}</h1>
-         <p class="mt-3 text-white/90">{contactJson .subheadline}</p>
-       </div>
-     </div>
-      </section>
+        class="pointer-events-none absolute inset-0 z-10"
+        style="background: linear-gradient(to bottom, rgba(255,255,255,0) 70%, var(--color-bg) 100%);"
+      >
+      </div>
+      <div class="absolute inset-0 bg-black/40"></div>
+
+      <div
+        class="relative z-10 h-full flex items-center justify-center text-center px-6"
+      >
+        <div class="max-w-2xl">
+          <h1 class="text-white text-4xl sm:text-5xl font-serif">
+            {contactJson.headline}
+          </h1>
+          <p class="mt-3 text-white/90">{contactJson.subheadline}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Primary: instant messaging (brand-tinted panel, centered, no borders) -->
+    <section class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div
+        class="my-12 rounded-2xl bg-[var(--color-bg)]/60 p-8 text-center shadow-[var(--shadow-soft)]"
+      >
+        <h2 class="text-2xl sm:text-3xl font-serif font-semibold">
+          Message us instantly
+        </h2>
+        <p class="mt-2 text-[var(--color-muted)]">
+          Quick questions, availability, or local tips — reach us fast on chat:
+        </p>
+
+        <div class="mt-6 flex flex-wrap justify-center gap-4">
+          <!-- WhatsApp -->
+          <a
+            href={waLink}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#25D366] hover:scale-105 hover:shadow-xl transition transform"
+            aria-label="Chat on WhatsApp"
+          >
+            <Image
+              src={whatsappIcon}
+              alt="whatsapp"
+              width={40}
+              loading="lazy"
+              decoding="async"
+              class="block h-full w-full object-cover"
+            />
+            WhatsApp
+          </a>
+
+          <!-- Viber -->
+          <a
+            href={viberLink}
+            class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#7360F2] hover:scale-105 hover:shadow-xl transition transform"
+            aria-label="Chat on Viber"
+          >
+            <Image
+              src={viberIcon}
+              alt="viberr"
+              width={40}
+              loading="lazy"
+              decoding="async"
+              class="block h-full w-full object-cover"
+            /> Viber
+          </a>
+        </div>
+
+        <p class="mt-3 text-xs text-[var(--color-muted)]">
+          WhatsApp opens Web/Desktop on computers · Viber requires the app
+        </p>
+      </div>
+    </section>
 
     <!-- Contact + quick links -->
-    <section class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16">
+    <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
       <!-- Banners -->
-      {success && (
-        <div class="mb-6 flex items-start gap-3 rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 text-emerald-900" aria-live="polite" role="status">
-          <CheckCircle2 class="mt-0.5 h-5 w-5" />
-          <div>
-            <strong>{contactJson.bannerSuccess || "Thank you — your message has been sent."}</strong>
+      {
+        success && (
+          <div
+            class="mb-6 flex items-start gap-3 rounded-lg bg-emerald-50 px-4 py-3 text-emerald-900 shadow-[var(--shadow-soft)]"
+            aria-live="polite"
+            role="status"
+          >
+            <CheckCircle2 class="mt-0.5 h-5 w-5" />
+            <div>
+              <strong>
+                {contactJson.bannerSuccess ||
+                  "Thank you — your message has been sent."}
+              </strong>
+            </div>
           </div>
-        </div>
-      )}
-      {error && (
-        <div class="mb-6 flex items-start gap-3 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-900" aria-live="assertive" role="alert">
-          <AlertTriangle class="mt-0.5 h-5 w-5" />
-          <div class="…">
-            <strong>{contactJson.bannerError || "Something went wrong."}</strong>
+        )
+      }
+      {
+        error && (
+          <div
+            class="mb-6 flex items-start gap-3 rounded-lg bg-red-50 px-4 py-3 text-red-900 shadow-[var(--shadow-soft)]"
+            aria-live="assertive"
+            role="alert"
+          >
+            <AlertTriangle class="mt-0.5 h-5 w-5" />
+            <div class="…">
+              <strong>
+                {contactJson.bannerError || "Something went wrong."}
+              </strong>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Form -->
-        <div class="lg:col-span-2">
+        <!-- Form (secondary) -->
+        <div
+          class="lg:col-span-2 rounded-2xl bg-[var(--color-bg)]/60 p-8 shadow-[var(--shadow-soft)]"
+        >
+          <h2 class="text-2xl sm:text-3xl font-serif font-semibold mb-6">
+            Or fill this contact form
+          </h2>
+
           <form
             name="contact"
             method="POST"
             data-netlify="true"
             netlify-honeypot="website"
             action="/contact?success=1"
-            class="rounded-[var(--radius)] bg-[var(--color-surface)] p-6 sm:p-8 shadow-[var(--shadow-soft)]"
           >
-            <!-- Netlify required hidden input -->
             <input type="hidden" name="form-name" value="contact" />
-            <!-- Honeypot -->
-            <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input
+              type="text"
+              name="website"
+              class="hidden"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label for="name" class="block text-sm font-medium">Full name</label>
+                <label for="name" class="block text-sm font-medium"
+                  >Full name</label
+                >
                 <div class="mt-2 relative">
                   <input
-                    id="name" name="name" type="text" required autocomplete="name"
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    autocomplete="name"
                     class="peer w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                     placeholder="First and last name"
                   />
-                  <Users class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]" />
+                  <Users
+                    class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]"
+                  />
                 </div>
               </div>
 
               <div>
-                <label for="email" class="block text-sm font-medium">Email</label>
+                <label for="email" class="block text-sm font-medium"
+                  >Email</label
+                >
                 <div class="mt-2 relative">
                   <input
-                    id="email" name="email" type="email" required autocomplete="email"
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autocomplete="email"
                     class="peer w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                     placeholder="you@example.com"
                   />
-                  <Mail class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]" />
+                  <Mail
+                    class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]"
+                  />
                 </div>
               </div>
 
               <div>
-                <label for="phone" class="block text-sm font-medium">Phone (optional)</label>
+                <label for="phone" class="block text-sm font-medium"
+                  >Phone (optional)</label
+                >
                 <div class="mt-2 relative">
                   <input
-                    id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="^[0-9+\s()-]{6,}$"
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    autocomplete="tel"
+                    inputmode="tel"
+                    pattern="^[0-9+\s()-]{6,}$"
                     class="peer w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                     placeholder="+30 xxx xxx xxxx"
                   />
-                  <Phone class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]" />
+                  <Phone
+                    class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]"
+                  />
                 </div>
               </div>
 
               <div>
-                <label for="dates" class="block text-sm font-medium">Preferred dates (optional)</label>
+                <label for="dates" class="block text-sm font-medium"
+                  >Preferred dates (optional)</label
+                >
                 <div class="mt-2 relative">
                   <input
-                    id="dates" name="dates" type="text" autocomplete="off"
+                    id="dates"
+                    name="dates"
+                    type="text"
+                    autocomplete="off"
                     class="peer w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                     placeholder="e.g., 15–20 Sept"
                   />
-                  <Calendar class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]" />
+                  <Calendar
+                    class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted)] peer-focus:text-[var(--color-brand)]"
+                  />
                 </div>
               </div>
             </div>
 
             <div class="mt-5">
-              <label for="message" class="block text-sm font-medium">Message</label>
+              <label for="message" class="block text-sm font-medium"
+                >Message</label
+              >
               <textarea
-                id="message" name="message" rows={6} required
+                id="message"
+                name="message"
+                rows={6}
+                required
                 class="mt-2 w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                 placeholder="Tell us a bit about your trip, number of guests, pets, special requests…"
               ></textarea>
-              <p class="mt-2 text-xs text-[var(--color-muted)] inline-flex items-center gap-1">
+              <p
+                class="mt-2 text-xs text-[var(--color-muted)] inline-flex items-center gap-1"
+              >
                 <PawPrint class="h-4 w-4" /> Bringing a pet? Let us know here.
               </p>
             </div>
 
             <div class="mt-5 flex items-start gap-3">
-              <input id="consent" name="consent" type="checkbox" required class="mt-1 h-4 w-4 rounded border-[var(--color-border)]" />
+              <input
+                id="consent"
+                name="consent"
+                type="checkbox"
+                required
+                class="mt-1 h-4 w-4 rounded border-[var(--color-border)]"
+              />
               <label for="consent" class="text-sm text-[var(--color-muted)]">
-                I consent to having this website store my submitted information so we can respond.
+                I consent to having this website store my submitted information
+                so we can respond.
               </label>
             </div>
 
-            <div class="mt-8">
+            <div class="mt-8 flex items-center justify-center">
               <button
                 type="submit"
                 class="inline-flex items-center gap-2 rounded-full border border-[var(--color-brand)] text-[var(--color-brand)]
@@ -173,32 +319,73 @@ const airbnbUrl  = "https://www.airbnb.com/rooms/12843947?search_mode=regular_se
           </form>
         </div>
 
-        <!-- Quick info / platforms -->
-        <aside class="lg:col-span-1 space-y-4">
-          <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <!-- Side column: now using same principles (soft brand tint, no borders, pill links) -->
+        <aside class="lg:col-span-1 space-y-6">
+          <!-- Booking & reviews -->
+          <div
+            class="rounded-2xl bg-[var(--color-bg)]/60 p-8 shadow-[var(--shadow-soft)]"
+          >
             <h2 class="text-lg font-semibold">Booking & reviews</h2>
-            <p class="mt-1 text-[var(--color-muted)]">Live prices, availability, and policies:</p>
-            <div class="mt-4 space-y-2">
-              <a href={bookingUrl} target="_blank" rel="noopener"
-                 class="flex items-center justify-between rounded-xl border border-[var(--color-border)] px-3 py-2 hover:bg-[var(--color-bg)] transition">
-                <span class="inline-flex items-center gap-2"><ExternalLink class="h-4 w-4" /> Booking.com</span>
-                <span aria-hidden="true">→</span>
+            <p class="mt-1 text-center text-[var(--color-muted)]">
+              Live prices, availability, and policies:
+            </p>
+
+            <div class="mt-4 flex flex-col gap-3">
+              <a
+                href={bookingUrl}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center justify-center gap-2 rounded-full px-2 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
+              >
+                <Image
+                  src={bookingIcon}
+                  alt="booking"
+                  width={30}
+                  loading="lazy"
+                  decoding="async"
+                  class="block h-full w-full object-cover"
+                /> Booking.com
               </a>
-              <a href={airbnbUrl} target="_blank" rel="noopener"
-                 class="flex items-center justify-between rounded-xl border border-[var(--color-border)] px-3 py-2 hover:bg-[var(--color-bg)] transition">
-                <span class="inline-flex items-center gap-2"><Home class="h-4 w-4" /> Airbnb</span>
-                <span aria-hidden="true">→</span>
+
+              <a
+                href={airbnbUrl}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
+              >
+                <Image
+                  src={airbnbIcon}
+                  alt="airbnb"
+                  width={30}
+                  loading="lazy"
+                  decoding="async"
+                  class="block h-full w-full object-cover"
+                /> Airbnb
               </a>
             </div>
           </div>
 
-          <!-- Optional: phone/email quick cards -->
-          <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <!-- Other ways to reach us -->
+          <div
+            class="rounded-2xl bg-[var(--color-bg)]/60 p-8 shadow-[var(--shadow-soft)]"
+          >
             <h2 class="text-lg font-semibold">Other ways to reach us</h2>
-            <ul class="mt-3 space-y-2 text-[var(--color-muted)]">
-              <li class="flex items-center gap-2"><Mail class="h-4 w-4" /><a class="underline" href="mailto:info@calamon.com">info@calamon.com</a></li>
-              <li class="flex items-center gap-2"><Phone class="h-4 w-4" /><a class="underline" href="tel:+30XXXXXXXXXX">+30 XXX XXX XXXX</a></li>
-            </ul>
+            <div class="mt-4 flex flex-col gap-3">
+              <a
+                href=`mailto:${email}`
+                class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
+              >
+                <Mail class="h-4 w-4" />
+                {email}
+              </a>
+              <a
+                href="tel:+30XXXXXXXXXX"
+                class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
+              >
+                <Phone class="h-4 w-4" />
+                {phoneE164}
+              </a>
+            </div>
           </div>
         </aside>
       </div>
