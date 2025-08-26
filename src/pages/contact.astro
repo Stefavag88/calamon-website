@@ -16,27 +16,24 @@ import {
   CheckCircle2,
   AlertTriangle,
   PawPrint,
+  MapPin,
+  Navigation,
 } from "@lucide/astro";
 
 // CMS
 import contactJson from "../content/cms/contact.json";
+
+//config
+import { SITE, LINKS } from "../config/site";
+import { MAPS, LOCATION } from "../config/site";
 
 // success / error query handling
 const q = new URL(Astro.request.url).searchParams;
 const success = q.get("success") === "1";
 const error = q.get("error") === "1";
 
-// (optional) centralize platform URLs; or move to env
-const bookingUrl =
-  "https://www.booking.com/hotel/gr/calamon-apartments.en-gb.html?aid=356980&label=gog235jc-10CAsoXEISY2FsYW1vbi1hcGFydG1lbnRzSDNYA2hciAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALj9azFBsACAdICJGJmOTE4NjZlLTFmNjQtNGQ4Ny04ODc5LWVmOTZlOWYwYjgzMdgCAeACAQ&sid=05839a4e68a790da7a89828d58a29a2b&dest_id=-817017&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1756052204&srpvid=88ec7273bfaf069f&type=total&ucfs=1&";
-const airbnbUrl =
-  "https://www.airbnb.com/rooms/12843947?search_mode=regular_search&adults=1&check_in=2025-09-01&check_out=2025-09-06&children=0&infants=0&pets=0&source_impression_id=p3_1756052366_P3afZVbecfpE_yF5&previous_page_section_name=1000&federated_search_id=2faf620a-733d-4a85-b909-b4aa9a2b030e";
-
-// Messaging shortcuts
-const email = "calamon@otenet.gr";
-const phoneE164 = "30 697 4646203"; // ← your full number without '+'
-const waLink = `https://wa.me/${phoneE164}`;
-const viberLink = `viber://chat?number=%2B${phoneE164}`; // needs '+' encoded as %2B
+const bookingUrl = LINKS.booking;
+const airbnbUrl = LINKS.airbnb;
 ---
 
 <Layout
@@ -83,7 +80,7 @@ const viberLink = `viber://chat?number=%2B${phoneE164}`; // needs '+' encoded as
         <div class="mt-6 flex flex-wrap justify-center gap-4">
           <!-- WhatsApp -->
           <a
-            href={waLink}
+            href={LINKS.whatsapp()}
             target="_blank"
             rel="noopener"
             class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#25D366] hover:scale-105 hover:shadow-xl transition transform"
@@ -102,7 +99,7 @@ const viberLink = `viber://chat?number=%2B${phoneE164}`; // needs '+' encoded as
 
           <!-- Viber -->
           <a
-            href={viberLink}
+            href={LINKS.viber()}
             class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#7360F2] hover:scale-105 hover:shadow-xl transition transform"
             aria-label="Chat on Viber"
           >
@@ -366,18 +363,35 @@ const viberLink = `viber://chat?number=%2B${phoneE164}`; // needs '+' encoded as
             <h2 class="text-lg font-semibold">Other ways to reach us</h2>
             <div class="mt-4 flex flex-col gap-3">
               <a
-                href=`mailto:${email}`
+                href=`mailto:${SITE.contact.email}`
                 class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
               >
                 <Mail class="h-4 w-4" />
-                {email}
+                {SITE.contact.email}
               </a>
               <a
-                href="tel:+30XXXXXXXXXX"
+                href=`tel:${SITE.contact.e164Plus}`
                 class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
               >
                 <Phone class="h-4 w-4" />
-                {phoneE164}
+                {SITE.contact.e164Digits}
+              </a>
+            </div>
+          </div>
+
+          <div
+            class="rounded-2xl bg-[var(--color-bg)]/60 p-8 shadow-[var(--shadow-soft)]"
+          >
+            <h2 class="text-lg font-semibold">Location</h2>
+            <div class="mt-4 flex flex-wrap justify-center gap-3">
+              <a
+                href={MAPS.view()}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-base font-medium hover:opacity-90 transition"
+              >
+                <MapPin class="h-5 w-5" />
+                Open in Google Maps
               </a>
             </div>
           </div>

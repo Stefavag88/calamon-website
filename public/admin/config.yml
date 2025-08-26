@@ -31,3 +31,18 @@ collections:
           - { name: subheadline, label: "Subheadline", widget: text }
           - { name: bannerSuccess, label: "Success Banner", widget: text, required: false }
           - { name: bannerError, label: "Error Banner", widget: text, required: false }
+  - label: "Site Settings"
+    name: "site"
+    files:
+      - label: "Global"
+        name: "global"
+        file: "src/content/cms/site.json"
+        fields:
+          - { label: "Brand Name", name: "brandName", widget: "string" }
+          - { label: "Email", name: "email", widget: "string", pattern: [".+@.+\\..+", "Invalid email"] }
+          - { label: "Phone (raw, human)", name: "phoneRaw", widget: "string", hint: "e.g. +30 69X XXX XXXX" }
+          - { label: "WhatsApp default message", name: "whatsappDefaultMsg", widget: "string", required: false }
+          - { label: "Booking URL", name: "booking", widget: "string" }
+          - { label: "Airbnb URL", name: "airbnb", widget: "string" }
+          - { label: "Instagram URL", name: "instagram", widget: "string", required: false }
+          - { label: "Facebook URL", name: "facebook", widget: "string", required: false }

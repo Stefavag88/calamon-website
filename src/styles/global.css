@@ -27,3 +27,5 @@ html {
   letter-spacing: 0.015em; /* subtle tracking for airy feel */
   line-height: 1.6;
 }
+
+.link-classic { @apply inline-flex items-center gap-1 underline text-blue-600 hover:text-blue-700 visited:text-purple-600; }
