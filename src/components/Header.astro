@@ -14,7 +14,8 @@ const isActive = (href: string) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 
 // Shell styles
-const shell = "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color-white)]"
+const shell =
+  "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color-white)]";
 
 // Link styles
 const linkBase = "px-2 py-2 text-sm tracking-wide transition-colors";
@@ -35,52 +36,70 @@ const linkClass = (href: string) => {
 ---
 
 <header class={`fixed inset-x-0 top-0 z-50 ${shell}`}>
-  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+  <nav
+    class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
+  >
     <!-- Logo (optimized via astro:assets + Unpic service) -->
-    <a href="/" class="flex items-center gap-2 font-semibold text-lg tracking-tight">
+    <a
+      href="/"
+      class="flex items-center gap-2 font-semibold text-lg tracking-tight"
+    >
       <Image
         src={logo}
         alt="Calamon Logo"
-        widths={[96, 128, 160, 192]}                         
-        sizes="(min-width:768px) 160px, 128px"               
-        loading="eager"                                     
+        widths={[96, 128, 160, 192]}
+        sizes="(min-width:768px) 160px, 128px"
+        loading="eager"
         decoding="async"
-        class="h-[50px] w-auto"                              
+        class="h-[50px] w-auto"
       />
       Calamon
     </a>
 
     <!-- Desktop nav -->
     <div class="hidden md:flex items-center gap-7">
-      {nav.map((item) => (
-        <a
-          href={item.href}
-          class={linkClass(item.href)}
-          aria-current={isActive(item.href) ? "page" : undefined}
-        >
-          {item.label}
-        </a>
-      ))}
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class={linkClass(item.href)}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
     </div>
 
     <!-- Mobile -->
     <details class="md:hidden">
-      <summary class="list-none p-2 -m-2 rounded-md cursor-pointer hover:opacity-90" aria-label="Open menu">
-        <svg viewBox="0 0 24 24" class="w-6 h-6" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <summary
+        class="list-none p-3 rounded-md cursor-pointer hover:opacity-90"
+        aria-label="Open menu"
+      >
+        <svg viewBox="0 0 24 24" class="w-8 h-8" aria-hidden="true">
+          <path
+            d="M4 7h16M4 12h16M4 17h16"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path>
         </svg>
       </summary>
-      <div class="mt-3 absolute left-0 right-0 bg-transparent text-[var(--color-white)] backdrop-blur-sm border-t border-[color:var(--color-border)] hover:bg-white/5">
+      <div
+        class="mt-3 absolute left-0 right-0 bg-transparent text-[var(--color-white)] backdrop-blur-sm border-t border-[color:var(--color-border)] hover:bg-white/5"
+      >
         <nav class="px-4 py-4 flex flex-col gap-2" aria-label="Mobile">
-          {nav.map((item) => (
-            <a
-              href={item.href}
-              class={`px-3 py-2 rounded-lg text-sm  hover:bg-white/20 ${isActive(item.href) ? "bg-black/5" : ""}`}
-              aria-current={isActive(item.href) ? "page" : undefined}
-            >
-              {item.label}
-            </a>
-          ))}
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class={`px-3 py-2 rounded-lg text-sm  hover:bg-white/20 ${isActive(item.href) ? "bg-black/5" : ""}`}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
         </nav>
       </div>
     </details>

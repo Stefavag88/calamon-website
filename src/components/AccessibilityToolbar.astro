@@ -1,0 +1,232 @@
+---
+import { Accessibility } from "@lucide/astro";
+
+const BTN =
+    "inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-3 py-2 text-sm hover:bg-[var(--color-bg)] transition focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]";
+const TOGGLE =
+    BTN +
+    " aria-pressed:true:bg-[var(--color-brand)] aria-pressed:true:text-white";
+---
+
+<div
+    class="fixed bottom-4 right-4 z-[60]"
+    role="region"
+    aria-label="Accessibility controls"
+>
+    <details class="group">
+        <summary
+            class="list-none cursor-pointer shadow-[var(--shadow-soft)] rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] px-4 py-2 text-sm flex items-center gap-2 select-none"
+            aria-label="Open accessibility menu"
+        >
+            <Accessibility class="h-7 w-7" aria-hidden="true" />
+            <span>Accessibility</span>
+            <span
+                aria-hidden="true"
+                class="ml-1 transition group-open:rotate-180">⌄</span
+            >
+        </summary>
+
+        <div
+            class="mt-2 w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-soft)]"
+        >
+            <!-- Themes (mutually exclusive) -->
+            <div class="text-sm mb-1">Theme</div>
+            <div class="flex items-center gap-2">
+                <button
+                    id="a11y-theme-reset"
+                    class={TOGGLE}
+                    type="button"
+                    aria-pressed="true">Reset</button
+                >
+                <button
+                    id="a11y-theme-dark"
+                    class={TOGGLE}
+                    type="button"
+                    aria-pressed="false">Dark</button
+                >
+                <button
+                    id="a11y-theme-contrast"
+                    class={TOGGLE}
+                    type="button"
+                    aria-pressed="false">High Contrast</button
+                >
+            </div>
+
+            <!-- Font size -->
+            <div class="mt-3">
+                <div class="text-sm mb-1">Font size</div>
+                <div class="flex items-center gap-2">
+                    <button
+                        id="a11y-font-dec"
+                        class={BTN}
+                        type="button"
+                        aria-label="Decrease text size">A−</button
+                    >
+                    <div
+                        id="a11y-font-label"
+                        class="text-xs px-2 py-1 rounded border border-[var(--color-border)]"
+                    >
+                        100%
+                    </div>
+                    <button
+                        id="a11y-font-inc"
+                        class={BTN}
+                        type="button"
+                        aria-label="Increase text size">A+</button
+                    >
+                    <button
+                        id="a11y-font-reset"
+                        class={BTN}
+                        type="button"
+                        aria-label="Reset text size">Reset</button
+                    >
+                </div>
+            </div>
+
+            <!-- Reduced motion -->
+            <div class="mt-3">
+                <button
+                    id="a11y-motion"
+                    class={TOGGLE}
+                    type="button"
+                    aria-pressed="false"
+                >
+                    Reduced Motion
+                </button>
+            </div>
+
+            <!-- Reset everything -->
+            <div class="mt-4">
+                <button
+                    id="a11y-reset-all"
+                    class={BTN + " w-full justify-center"}
+                    type="button"
+                >
+                    Reset all
+                </button>
+            </div>
+
+            <p class="mt-3 text-[var(--color-muted)] text-xs">
+                Your choices are saved for future visits.
+            </p>
+        </div>
+    </details>
+</div>
+
+<script is:inline>
+    (() => {
+        const root = document.documentElement;
+
+        const store = {
+            get() {
+                try {
+                    return JSON.parse(localStorage.getItem("a11y") || "{}");
+                } catch {
+                    return {};
+                }
+            },
+            set(v) {
+                localStorage.setItem("a11y", JSON.stringify(v));
+            },
+        };
+
+        // Default theme is "reset" (your original)
+        const state = Object.assign(
+            { theme: "reset", motion: false, font: 100 },
+            store.get(),
+        );
+
+        // Elements
+        const $reset = document.getElementById("a11y-theme-reset");
+        const $dark = document.getElementById("a11y-theme-dark");
+        const $contrast = document.getElementById("a11y-theme-contrast");
+        const $inc = document.getElementById("a11y-font-inc");
+        const $dec = document.getElementById("a11y-font-dec");
+        const $fontReset = document.getElementById("a11y-font-reset");
+        const $label = document.getElementById("a11y-font-label");
+        const $motion = document.getElementById("a11y-motion");
+        const $resetAll = document.getElementById("a11y-reset-all");
+
+        function apply() {
+            // Theme (mutually exclusive)
+            root.setAttribute("data-theme", state.theme); // "reset" | "dark" | "contrast"
+            $reset.setAttribute(
+                "aria-pressed",
+                String(state.theme === "reset"),
+            );
+            $dark.setAttribute("aria-pressed", String(state.theme === "dark"));
+            $contrast.setAttribute(
+                "aria-pressed",
+                String(state.theme === "contrast"),
+            );
+
+            // Motion
+            root.setAttribute(
+                "data-reduce-motion",
+                state.motion ? "true" : "false",
+            );
+            $motion.setAttribute("aria-pressed", String(!!state.motion));
+
+            // Font (85%..150%)
+            const clamped = Math.max(85, Math.min(150, Math.round(state.font)));
+            state.font = clamped;
+            root.style.setProperty(
+                "--a11y-font-scale",
+                (clamped / 100).toString(),
+            );
+            $label.textContent = clamped + "%";
+
+            store.set(state);
+        }
+
+        // Theme buttons
+        $reset.addEventListener("click", () => {
+            state.theme = "reset";
+            apply();
+        });
+        $dark.addEventListener("click", () => {
+            state.theme = "dark";
+            apply();
+        });
+        $contrast.addEventListener("click", () => {
+            state.theme = "contrast";
+            apply();
+        });
+
+        // Motion
+        $motion.addEventListener("click", () => {
+            state.motion = !state.motion;
+            apply();
+        });
+
+        // Font
+        $inc.addEventListener("click", () => {
+            state.font += 10;
+            apply();
+        });
+        $dec.addEventListener("click", () => {
+            state.font -= 10;
+            apply();
+        });
+        $fontReset.addEventListener("click", () => {
+            state.font = 100;
+            apply();
+        });
+
+        // Reset all
+        $resetAll.addEventListener("click", () => {
+            state.theme = "reset";
+            state.motion = false;
+            state.font = 100;
+            apply();
+        });
+
+        // First paint: if no saved state, force default reset to avoid flashes
+        if (localStorage.getItem("a11y") == null) {
+            state.theme = "reset";
+            state.motion = false;
+            state.font = 100;
+        }
+        apply();
+    })();
+</script>

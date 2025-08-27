@@ -54,16 +54,16 @@ const shell = "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color
 
   <main>
     <!-- HERO -->
-<section class="relative min-h-[70svh] md:h-[80svh] overflow-visible md:overflow-hidden ${shell}">
-      <UnpicImage
-        src={hero9.src}
-        alt="Pool and olive trees at Calamon Apartments, Crete"
-        layout="fullWidth"
-        priority
-        placeholder="blurhash"
-        class="absolute inset-0 h-full w-full object-cover"
-      />
-      <div class="absolute inset-0 bg-black/30"></div>
+      <section class="relative min-h-[70svh] md:h-[80svh] overflow-visible md:overflow-hidden ${shell}">
+        <UnpicImage
+          src={hero9.src}
+          alt="Pool and olive trees at Calamon Apartments, Crete"
+          layout="fullWidth"
+          placeholder="blurhash"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/30"></div>
 
 <div class="relative z-10 flex items-center justify-center px-4
             pt-[calc(env(safe-area-inset-top)+6rem)] sm:pt-[calc(env(safe-area-inset-top)+7rem)]
@@ -109,14 +109,15 @@ const shell = "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color
       <div class="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         <figure class="relative aspect-[4/3] overflow-hidden rounded-2xl">
           <Image
-            src={hero4}
-            alt="Pool terrace with seating"
-            widths={[360, 640, 960, 1200]}
-            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
+  src={hero4}
+  alt="Pool terrace with seating"
+  widths={[360, 600, 840, 1080]}         
+  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+  quality={75}                             
+  loading="lazy"
+  decoding="async"
+  class="h-full w-full object-cover"
+/>
           <figcaption class="sr-only">Pool terrace with seating</figcaption>
         </figure>
 
@@ -124,11 +125,12 @@ const shell = "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color
           <Image
             src={olivesView}
             alt="Olive-tree path near the apartments"
-            widths={[360, 640, 960, 1200]}
-            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
+            widths={[360, 600, 840, 1080]}         
+  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+  quality={75}                             
+  loading="lazy"
+  decoding="async"
+  class="h-full w-full object-cover"
           />
           <figcaption class="sr-only">Olive-tree path</figcaption>
         </figure>
