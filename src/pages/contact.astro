@@ -17,13 +17,12 @@ import {
   AlertTriangle,
   PawPrint,
   MapPin,
-  Navigation,
 } from "@lucide/astro";
 
 // CMS
 import contactJson from "../content/cms/contact.json";
 
-//config
+// config
 import { SITE, LINKS } from "../config/site";
 import { MAPS, LOCATION } from "../config/site";
 
@@ -34,6 +33,13 @@ const error = q.get("error") === "1";
 
 const bookingUrl = LINKS.booking;
 const airbnbUrl = LINKS.airbnb;
+
+// Map URLs (embed is built from coords if present; otherwise from a name query)
+const mapsViewUrl = MAPS.view(); // your existing "Open in Google Maps" deeplink
+const embedUrl =
+  LOCATION?.lat && LOCATION?.lng
+    ? `https://www.google.com/maps?q=${LOCATION.lat},${LOCATION.lng}&z=14&output=embed`
+    : `https://www.google.com/maps?q=${encodeURIComponent(`${SITE?.brand ?? "Calamon Apartments"} ${LOCATION?.label ?? "Episkopi, Crete"}`)}&z=14&output=embed`;
 ---
 
 <Layout
@@ -65,7 +71,7 @@ const airbnbUrl = LINKS.airbnb;
       </div>
     </section>
 
-    <!-- Primary: instant messaging (brand-tinted panel, centered, no borders) -->
+    <!-- Primary: instant messaging -->
     <section class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <div
         class="my-12 rounded-2xl bg-[var(--color-bg)]/60 p-8 text-center shadow-[var(--shadow-soft)]"
@@ -83,7 +89,7 @@ const airbnbUrl = LINKS.airbnb;
             href={LINKS.whatsapp()}
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#25D366] hover:scale-105 hover:shadow-xl transition transform"
+            class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#25D366] hover:scale-105 hover:shadow-xl transition"
             aria-label="Chat on WhatsApp"
           >
             <Image
@@ -92,7 +98,6 @@ const airbnbUrl = LINKS.airbnb;
               width={40}
               loading="lazy"
               decoding="async"
-              class="block h-full w-full object-cover"
             />
             WhatsApp
           </a>
@@ -100,17 +105,17 @@ const airbnbUrl = LINKS.airbnb;
           <!-- Viber -->
           <a
             href={LINKS.viber()}
-            class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#7360F2] hover:scale-105 hover:shadow-xl transition transform"
+            class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-white text-lg font-medium shadow-lg bg-[#7360F2] hover:scale-105 hover:shadow-xl transition"
             aria-label="Chat on Viber"
           >
             <Image
               src={viberIcon}
-              alt="viberr"
+              alt="viber"
               width={40}
               loading="lazy"
               decoding="async"
-              class="block h-full w-full object-cover"
-            /> Viber
+            />
+            Viber
           </a>
         </div>
 
@@ -148,7 +153,7 @@ const airbnbUrl = LINKS.airbnb;
             role="alert"
           >
             <AlertTriangle class="mt-0.5 h-5 w-5" />
-            <div class="…">
+            <div>
               <strong>
                 {contactJson.bannerError || "Something went wrong."}
               </strong>
@@ -158,11 +163,11 @@ const airbnbUrl = LINKS.airbnb;
       }
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Form (secondary) -->
+        <!-- Form -->
         <div
           class="lg:col-span-2 rounded-2xl bg-[var(--color-bg)]/60 p-8 shadow-[var(--shadow-soft)]"
         >
-          <h2 class="text-2xl sm:text-3xl font-serif font-semibold mb-6">
+          <h2 class="text-2xl sm:text-3xl font-serif font-semibold mb-12">
             Or fill this contact form
           </h2>
 
@@ -235,7 +240,7 @@ const airbnbUrl = LINKS.airbnb;
                     type="tel"
                     autocomplete="tel"
                     inputmode="tel"
-                    pattern="^[0-9+\s()-]{6,}$"
+                    pattern="^[0-9+\\s()-]{6,}$"
                     class="peer w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                     placeholder="+30 xxx xxx xxxx"
                   />
@@ -298,7 +303,7 @@ const airbnbUrl = LINKS.airbnb;
               </label>
             </div>
 
-            <div class="mt-8 flex items-center justify-center">
+            <div class="mt-12 flex items-center justify-center">
               <button
                 type="submit"
                 class="inline-flex items-center gap-2 rounded-full border border-[var(--color-brand)] text-[var(--color-brand)]
@@ -310,7 +315,7 @@ const airbnbUrl = LINKS.airbnb;
           </form>
         </div>
 
-        <!-- Side column: now using same principles (soft brand tint, no borders, pill links) -->
+        <!-- Side column -->
         <aside class="lg:col-span-1 space-y-6">
           <!-- Booking & reviews -->
           <div
@@ -334,8 +339,8 @@ const airbnbUrl = LINKS.airbnb;
                   width={30}
                   loading="lazy"
                   decoding="async"
-                  class="block h-full w-full object-cover"
-                /> Booking.com
+                />
+                Booking.com
               </a>
 
               <a
@@ -350,8 +355,8 @@ const airbnbUrl = LINKS.airbnb;
                   width={30}
                   loading="lazy"
                   decoding="async"
-                  class="block h-full w-full object-cover"
-                /> Airbnb
+                />
+                Airbnb
               </a>
             </div>
           </div>
@@ -363,14 +368,14 @@ const airbnbUrl = LINKS.airbnb;
             <h2 class="text-lg font-semibold">Other ways to reach us</h2>
             <div class="mt-4 flex flex-col gap-3">
               <a
-                href=`mailto:${SITE.contact.email}`
+                href={`mailto:${SITE.contact.email}`}
                 class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
               >
                 <Mail class="h-4 w-4" />
                 {SITE.contact.email}
               </a>
               <a
-                href=`tel:${SITE.contact.e164Plus}`
+                href={`tel:${SITE.contact.e164Plus}`}
                 class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 bg-white text-[var(--color-text)] shadow hover:shadow-md transition"
               >
                 <Phone class="h-4 w-4" />
@@ -379,21 +384,18 @@ const airbnbUrl = LINKS.airbnb;
             </div>
           </div>
 
+          <!-- Location with lazy-loaded map -->
           <div
             class="rounded-2xl bg-[var(--color-bg)]/60 p-8 shadow-[var(--shadow-soft)]"
           >
-            <h2 class="text-lg font-semibold">Location</h2>
-            <div class="mt-4 flex flex-wrap justify-center gap-3">
-              <a
-                href={MAPS.view()}
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-base font-medium hover:opacity-90 transition"
-              >
-                <MapPin class="h-5 w-5" />
-                Open in Google Maps
-              </a>
-            </div>
+            <h2 class="text-lg font-semibold">Find us easily on the map</h2>
+
+            <iframe
+              src="https://www.google.com/maps?q=Calamon+Apartments,+Episkopi,+Crete&z=14&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="mt-4 w-full aspect-[4/3] rounded-xl border border-[var(--color-border)]"
+            ></iframe>
           </div>
         </aside>
       </div>

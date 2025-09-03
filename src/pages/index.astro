@@ -28,6 +28,7 @@ import home from "../content/cms/home.json";
 
 //config
 import { SITE, LINKS } from "../config/site";
+import Img from "../components/ui/Img.astro";
 
 // External listings
 const bookingUrl = LINKS.booking;
@@ -41,7 +42,7 @@ const schema = {
   sameAs: [bookingUrl, airbnbUrl],
 };
 
-const shell = "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color-white)]"
+const shell = "bg-gradient-to-b from-white/10 to-white/0 text-[color:var(--color-white)]"
 ---
 
 <Layout
@@ -54,15 +55,22 @@ const shell = "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color
 
   <main>
     <!-- HERO -->
-      <section class="relative min-h-[70svh] md:h-[80svh] overflow-visible md:overflow-hidden ${shell}">
-        <UnpicImage
+      <section class=`relative min-h-[70svh] md:h-[80svh] overflow-visible md:overflow-hidden ${shell}`>
+        <!-- <UnpicImage
           src={hero9.src}
           alt="Pool and olive trees at Calamon Apartments, Crete"
           layout="fullWidth"
           placeholder="blurhash"
           fetchpriority="high"
           class="absolute inset-0 h-full w-full object-cover"
-        />
+        /> -->
+        <Img 
+          src={hero9.src}
+          alt="Pool and olive trees at Calamon Apartments, Crete"
+          layout="fullWidth"
+          placeholder="blurhash"
+          priority
+          class="absolute inset-0 h-full w-full object-cover"/>
         <div class="absolute inset-0 bg-black/30"></div>
 
 <div class="relative z-10 flex items-center justify-center px-4

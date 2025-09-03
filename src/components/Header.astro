@@ -18,7 +18,7 @@ const shell =
   "bg-gradient-to-b from-white/20 to-white/0 text-[color:var(--color-white)]";
 
 // Link styles
-const linkBase = "px-2 py-2 text-sm tracking-wide transition-colors";
+const linkBase = "px-2 py-2 tracking-wide transition-colors text-lg";
 const linkHover = "hover:text-black";
 const linkInactive = "text-[color:var(--color-white)]/80";
 
@@ -42,7 +42,7 @@ const linkClass = (href: string) => {
     <!-- Logo (optimized via astro:assets + Unpic service) -->
     <a
       href="/"
-      class="flex items-center gap-2 font-semibold text-lg tracking-tight"
+      class="flex items-center gap-2 font-semibold tracking-tight text-xl"
     >
       <Image
         src={logo}
@@ -93,7 +93,7 @@ const linkClass = (href: string) => {
             nav.map((item) => (
               <a
                 href={item.href}
-                class={`px-3 py-2 rounded-lg text-sm  hover:bg-white/20 ${isActive(item.href) ? "bg-black/5" : ""}`}
+                class={`px-3 py-2 rounded-lg text-md  hover:bg-white/20 ${isActive(item.href) ? "bg-black/5" : ""}`}
                 aria-current={isActive(item.href) ? "page" : undefined}
               >
                 {item.label}

@@ -1,0 +1,23 @@
+---
+import { Image as UnpicImage } from "@unpic/astro";
+
+const {
+  src,
+  alt,
+  class: className = "",
+  widths = [360, 600, 840, 1080],
+  sizes = "(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw",
+  priority = false,
+} = Astro.props;
+---
+
+<UnpicImage
+  src={src}
+  alt={alt}
+  class={className}
+  width={widths}
+  sizes={sizes}
+  loading={priority ? "eager" : "lazy"}
+  fetchpriority={priority ? "high" : undefined}
+  decoding="async"
+/>
